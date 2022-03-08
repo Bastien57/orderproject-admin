@@ -1,0 +1,143 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button color="primary"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      <h1>Commandes</h1>
+    </ion-title>
+  </ion-toolbar>
+  <ion-toolbar class="subheader">
+    <ion-segment scrollable color="primary" [(ngModel)]="segmentModel" (ionChange)="segmentChanged($event)">
+    <!-- <ion-segment color="primary" [(ngModel)]="segmentModel"> -->
+      <ion-segment-button value="processing" layout="icon-start">
+        <ion-label>En cours</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="all" layout="icon-start">
+        <ion-label>Toutes les commandes</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div *ngIf="segmentModel == 'processing'">
+    <ion-row class="ion-padding" *ngIf="!networkStatus?.connected">
+      Pas de connexion internet 🤔
+    </ion-row>
+    <div *ngIf="ordersProcessing && networkStatus?.connected">
+      <ion-row class="ion-padding" *ngIf="ordersProcessing.length == 0">
+        Pas de commandes 🤔
+      </ion-row>
+      <ion-list lines="none" class="list-custom ion-padding-horizontal ion-padding-bottom">
+        <div *ngFor="let orderProcessing of ordersProcessing">
+          <!-- WOO -->
+          <ion-item *ngIf="orderProcessing.from.name == 'woocommerce'" (click)="goToOrder(orderProcessing)">
+            <div tabindex="0"></div> <!-- DEBUG -->
+            <ion-thumbnail slot="start">
+              <img *ngIf="!orderProcessing.from.image" src="../../assets/website.jpg">
+              <img *ngIf="orderProcessing.from.image" [src]="orderProcessing.from.image">
+            </ion-thumbnail>
+            <ion-col size="2">
+              <h5>#{{ orderProcessing.number }}</h5>
+              <ion-badge *ngIf="orderProcessing.status == 'pending'" color="medium">Attente paiement</ion-badge>
+              <ion-badge *ngIf="orderProcessing.status == 'on-hold'" color="warning">En attente</ion-badge>
+              <ion-badge *ngIf="orderProcessing.status == 'processing'" color="success">En cours</ion-badge>
+              <ion-badge *ngIf="orderProcessing.status == 'completed'" color="medium">Terminée</ion-badge>
+              <ion-badge *ngIf="orderProcessing.status == 'finished'" color="medium">Terminée</ion-badge> <!-- OLD -->
+              <ion-badge *ngIf="orderProcessing.status == 'failed'" color="danger">Échouée</ion-badge>
+              <ion-badge *ngIf="orderProcessing.status == 'cancelled'" color="medium">Annulée</ion-badge>
+              <ion-badge *ngIf="orderProcessing.status == 'refunded'" color="medium">Remboursée</ion-badge>
+              <ion-badge *ngIf="orderProcessing.status == 'trash'" color="danger">Supprimée</ion-badge>
+            </ion-col>
+            <ion-col size="2" class="ion-text-center">
+              <ion-label>{{ orderProcessing.date_created | date:'HH:mm' }}</ion-label>
+              <ion-label color="medium">{{ orderProcessing.date_created | date:'dd/MM/yy' }}</ion-label>
+            </ion-col>
+            <ion-col size="6" class="ion-text-center">
+              <ion-label>{{ orderProcessing.shipping.first_name }} {{ orderProcessing.shipping.last_name }}</ion-label>
+              <ion-label color="medium">
+                <span>{{ orderProcessing.shipping.address_1 }} </span>
+                <span *ngIf="orderProcessing.shipping.address_2">, {{ orderProcessing.shipping.address_2 }} </span>
+                <span>
+                  <span *ngIf="orderProcessing.shipping.country == 'FR'">F-</span>
+                  <span *ngIf="orderProcessing.shipping.country == 'LU'">L-</span>
+                </span>
+                <span>{{ orderProcessing.shipping.postcode }} </span>
+                <span>{{ orderProcessing.shipping.city }}</span>
+              </ion-label>
+            </ion-col>
+            <ion-col size="2" class="ion-text-end">
+              <div>{{ orderProcessing.total | currency:'EUR':'symbol':'':'fr' }}</div>
+            </ion-col>
+          </ion-item>
+        </div>
+      </ion-list>
+      <ion-infinite-scroll [disabled]="disableInfiniteScrollProcessing" threshold="100px" (ionInfinite)="loadMoreOrdersProcessing($event)">
+      <ion-infinite-scroll-content>
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+    </div>
+  </div>
+
+  <div *ngIf="segmentModel == 'all'">
+    <ion-row class="ion-padding" *ngIf="!networkStatus?.connected">
+      Pas de connexion internet 🤔
+    </ion-row>
+    <div *ngIf="orders && networkStatus?.connected">
+      <ion-row class="ion-padding" *ngIf="orders.length == 0">
+        Pas de commandes 🤔
+      </ion-row>
+      <ion-list lines="none" class="list-custom ion-padding-horizontal ion-padding-bottom">
+        <div *ngFor="let order of orders">
+          <!-- WOO -->
+          <ion-item *ngIf="order.from.name == 'woocommerce'" (click)="goToOrder(order)">
+            <div tabindex="0"></div> <!-- DEBUG -->
+            <ion-thumbnail slot="start">
+              <img *ngIf="!order.from.image" src="../../assets/website.jpg">
+              <img *ngIf="order.from.image" [src]="order.from.image">
+            </ion-thumbnail>
+            <ion-col size="2">
+              <h5>#{{ order.number }}</h5>
+              <ion-badge *ngIf="order.status == 'pending'" color="medium">Attente paiement</ion-badge>
+              <ion-badge *ngIf="order.status == 'on-hold'" color="warning">En attente</ion-badge>
+              <ion-badge *ngIf="order.status == 'processing'" color="success">En cours</ion-badge>
+              <ion-badge *ngIf="order.status == 'completed'" color="medium">Terminée</ion-badge>
+              <ion-badge *ngIf="order.status == 'finished'" color="medium">Terminée</ion-badge> <!-- OLD -->
+              <ion-badge *ngIf="order.status == 'failed'" color="danger">Échouée</ion-badge>
+              <ion-badge *ngIf="order.status == 'cancelled'" color="medium">Annulée</ion-badge>
+              <ion-badge *ngIf="order.status == 'refunded'" color="medium">Remboursée</ion-badge>
+              <ion-badge *ngIf="order.status == 'trash'" color="danger">Supprimée</ion-badge>
+            </ion-col>
+            <ion-col size="2" class="ion-text-center">
+              <ion-label>{{ order.date_created | date:'HH:mm' }}</ion-label>
+              <ion-label color="medium">{{ order.date_created | date:'dd/MM/yy' }}</ion-label>
+            </ion-col>
+            <ion-col size="6" class="ion-text-center">
+              <ion-label>{{ order.shipping.first_name }} {{ order.shipping.last_name }}</ion-label>
+              <ion-label color="medium">
+                <span>{{ order.shipping.address_1 }} </span>
+                <span *ngIf="order.shipping.address_2">, {{ order.shipping.address_2 }} </span>
+                <span>
+                  <span *ngIf="order.shipping.country == 'FR'">F-</span>
+                  <span *ngIf="order.shipping.country == 'LU'">L-</span>
+                </span>
+                <span>{{ order.shipping.postcode }} </span>
+                <span>{{ order.shipping.city }}</span>
+              </ion-label>
+            </ion-col>
+            <ion-col size="2" class="ion-text-end">
+              <div>{{ order.total | currency:'EUR':'symbol':'':'fr' }}</div>
+            </ion-col>
+          </ion-item>
+        </div>
+      </ion-list>
+      <ion-infinite-scroll [disabled]="disableInfiniteScroll" threshold="100px" (ionInfinite)="loadMoreOrders($event)">
+      <ion-infinite-scroll-content>
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+    </div>
+  </div>
+  
+</ion-content>

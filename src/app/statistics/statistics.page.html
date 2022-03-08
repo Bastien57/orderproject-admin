@@ -1,0 +1,144 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button color="primary"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      <h1>Statistiques</h1>
+    </ion-title>
+  </ion-toolbar>
+  <ion-toolbar class="subheader">
+    <ion-row class="ion-no-padding ion-align-items-center">
+      <ion-col size="10" class="ion-no-padding">
+        <ion-segment scrollable color="primary" [(ngModel)]="segmentModel" (ionChange)="segmentChanged($event)">
+          <ion-segment-button value="week">
+            <ion-label>7 derniers jours</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="month">
+            <ion-label>Ce mois</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="last_month">
+            <ion-label>Dernier mois</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="year">
+            <ion-label>Année</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="custom">
+            <ion-label>Personnalisé</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </ion-col>
+      <ion-col size="2" class="ion-no-padding ion-text-left" *ngIf="this.date_min && this.date_max">
+        <ion-label class="date-indicator">({{ this.date_min | date:'dd/MM/yy' }} - {{ this.date_max | date:'dd/MM/yy' }})</ion-label>
+      </ion-col>
+      
+    </ion-row>
+    
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="report">
+
+  <ion-row class="ion-no-padding">
+    <ion-col class="ion-no-padding">
+      <ion-card mode="ios">
+        <ion-card-header>
+          <ion-card-subtitle>Total ventes</ion-card-subtitle>
+          <ion-card-title>{{ report?.total_sales | currency:'EUR':'symbol':'':'fr' }}</ion-card-title>
+        </ion-card-header>
+      </ion-card>
+    </ion-col>
+    <ion-col class="ion-no-padding">
+      <ion-card mode="ios">
+        <ion-card-header>
+          <ion-card-subtitle>Ventes moyennes</ion-card-subtitle>
+          <ion-card-title>{{ report?.average_sales | currency:'EUR':'symbol':'':'fr' }}</ion-card-title>
+        </ion-card-header>
+      </ion-card>
+    </ion-col>
+    <ion-col class="ion-no-padding">
+      <ion-card mode="ios">
+        <ion-card-header>
+          <ion-card-subtitle>Total commandes</ion-card-subtitle>
+          <ion-card-title>{{ report?.total_orders }}</ion-card-title>
+        </ion-card-header>
+      </ion-card>
+    </ion-col>
+    <ion-col class="ion-no-padding">
+      <ion-card mode="ios">
+        <ion-card-header>
+          <ion-card-subtitle>Nouveaux clients</ion-card-subtitle>
+          <ion-card-title>{{ report?.total_customers }}</ion-card-title>
+        </ion-card-header>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+  
+  <ion-row class="ion-no-padding">
+    <ion-col class="ion-no-padding">
+      <ion-card mode='ios' class="ion-padding ion-no-margin ion-margin-horizontal ion-margin-bottom">
+        <canvas baseChart 
+        [datasets]="chartData" 
+        [labels]="chartLabels" 
+        [options]="chartOptions" 
+        [colors]="chartColors"
+        [legend]="showLegend" 
+        [chartType]="chartType">
+        </canvas>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+
+  <ion-row class="ion-no-padding">
+    <ion-col class="ion-no-padding">
+      <ion-card mode='ios' class="ion-padding ion-margin">
+        <ion-item class="header-row">
+          <div tabindex="0"></div> <!-- DEBUG -->
+          <ion-col size="2">
+            Date 
+          </ion-col>
+          <ion-col size="2" class="ion-text-center">
+            Commandes
+          </ion-col>
+          <ion-col size="2" class="ion-text-center">
+            Nouveaux clients
+          </ion-col>
+          <ion-col size="3" class="ion-text-end">
+            Panier moyen 
+          </ion-col>
+          <ion-col size="3" class="ion-text-end">
+            Total 
+          </ion-col>
+        </ion-item>
+        <ion-item *ngFor="let total of report?.totals | keyvalue">
+          <div tabindex="0"></div> <!-- DEBUG -->
+          <ion-col size="2">
+            <span *ngIf="total.key.length === 10">{{ total.key | date:'dd/MM/yy' }}</span>
+            <span *ngIf="total.key.length === 7">{{ total.key | date:'MM/yy' }}</span>
+          </ion-col>
+          <ion-col size="2" class="ion-text-center">
+            <span *ngIf="total.value.orders">
+              {{ total.value.orders | number:'':'fr' }} 
+            </span>
+          </ion-col>
+          <ion-col size="2" class="ion-text-center">
+            <span *ngIf="total.value.customers">
+              {{ total.value.customers | number:'':'fr'}}
+            </span>
+          </ion-col>
+          <ion-col size="3" class="ion-text-end">
+            <span *ngIf="total.value.orders">
+              {{ total.value.sales / total.value.orders | currency:'EUR':'symbol':'':'fr' }}
+            </span>
+          </ion-col>
+          <ion-col size="3" class="ion-text-end">
+            <span *ngIf="total.value.orders">
+              <b>{{ total.value.sales | currency:'EUR':'symbol':'':'fr' }}</b>
+            </span>
+          </ion-col>
+        </ion-item>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+
+</ion-content>

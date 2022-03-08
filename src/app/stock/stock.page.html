@@ -1,0 +1,62 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button color="primary" text="" icon="arrow-back-outline" defaultHref="/stocks"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <h1 *ngIf="product">{{ product.name }}</h1>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="product">
+  <ion-list lines="none" class="list-custom ion-padding-horizontal ion-padding-bottom">
+    <div *ngFor="let variation of variations; let i = index">
+      <ion-item detail="false">
+        <div tabindex="0"></div> <!-- DEBUG -->
+        <ion-col size="2">
+          <ion-label><h5>#{{ variation.id }}</h5></ion-label>
+          <ion-label color="medium">{{ variation.sku }}</ion-label>
+        </ion-col>
+        <ion-col size="4">
+          <div *ngFor="let variation of variation.attributes">
+            <span>{{ variation.option }} </span>
+          </div>
+        </ion-col>
+        <ion-col size="2" class="ion-text-end">
+          <ion-label class="medium">Gérer le stock :</ion-label>
+        </ion-col>
+        <ion-col size="1" class="ion-text-center">
+          <ion-checkbox [(ngModel)]="variation.manage_stock" (ngModelChange)="checkboxChanged(i)"></ion-checkbox>
+        </ion-col>
+        <ion-col size="2" class="ion-text-center">
+          <div *ngIf="variation.manage_stock">
+            <ion-badge *ngIf="variation.stock_status =='instock'" color="success">En stock</ion-badge>
+            <ion-badge *ngIf="variation.stock_status =='outofstock'" color="danger">En rupture</ion-badge>
+            <ion-badge *ngIf="variation.stock_status =='onbackorder'" color="warning">En réappro</ion-badge>
+          </div>
+          <div *ngIf="!variation.manage_stock">
+            <ion-select [interfaceOptions]="customAlertOptions" class="ion-text-center ion-align-item-center ion-align-self-center" okText="OK" cancelText="ANNULER" [(ngModel)]="product.stock_status" (ionChange)="selectChanged(i, $event)">
+              <ion-select-option *ngFor="let status of statutes" [value]="status.value">{{ status.text }}</ion-select-option>
+            </ion-select>
+          </div>
+        </ion-col>
+        <ion-col size="1" class="ion-text-end">
+          <ion-input *ngIf="variation.manage_stock" (click)="$event.target.select()" (keyup.enter)="closeKeyboard()" type="number" [(ngModel)]="variation.stock_quantity" (ngModelChange)="inputChanged(i)"></ion-input>
+        </ion-col>
+      </ion-item>
+    </div>
+  </ion-list>
+    
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start" class="ion-padding-horizontal">
+      <ion-button shape="round" fill="solid" color="primary" (click)="cancelStock()">Annuler</ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end" class="ion-padding-horizontal">
+      <ion-button shape="round" fill="solid" color="primary" (click)="saveStock()">Sauvegarder</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

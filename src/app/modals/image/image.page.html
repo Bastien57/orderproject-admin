@@ -1,0 +1,50 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>
+      <h1>Image à ajouter produit</h1>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()" mode="md" color="primary">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-row class="ion-padding-horizontal ion-padding-top">
+    <ion-col class="ion-no-padding">
+      <ion-button (click)="inputFile.click()" fill="clear" expand="full">
+        Choisir un fichier
+      </ion-button>
+      <input #inputFile style="display: none" type="file" (change)="fileChangeEvent($event)" />
+    </ion-col>
+  </ion-row>
+  <ion-row class="ion-padding">
+    <image-cropper *ngIf="imageChangedEvent"
+      [imageChangedEvent]="imageChangedEvent"
+      [maintainAspectRatio]="true"
+      [aspectRatio]="1 / 1"
+      [resizeToWidth]="800"
+      [cropperMinWidth]= "800"
+      format="jpeg"
+      imageQuality="80"
+      onlyScaleDown="true"
+      (imageCropped)="imageCropped($event)"
+      (imageLoaded)="imageLoaded()"
+      (cropperReady)="cropperReady()"
+      (loadImageFailed)="loadImageFailed()"
+  ></image-cropper>
+  </ion-row>
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start" class="ion-padding-horizontal">
+      <ion-button shape="round" fill="solid" color="primary" (click)="closeModal()">Annuler</ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end" class="ion-padding-horizontal">
+      <ion-button shape="round" fill="solid" color="primary" (click)="uploadImage()">Valider</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

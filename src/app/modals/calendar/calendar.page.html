@@ -1,0 +1,20 @@
+<ion-content fullscreen="true">
+
+  <ion-calendar
+    [(ngModel)]="dateRange"
+    [options]="options"
+    [format]="'YYYY-MM-DDTHH:mm:ss'">
+  </ion-calendar>
+
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start" class="ion-padding-horizontal">
+      <ion-button fill="solid" expand="block" mode="md" color="dark" (click)="closeModal()">Annuler</ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end" class="ion-padding-horizontal">
+      <ion-button fill="solid" expand="block" mode="md" color="dark" (click)="getRange()">Valider</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

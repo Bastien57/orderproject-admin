@@ -1,0 +1,53 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>
+      <h1>Variation</h1>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal(false)" mode="md" color="primary">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-row class="ion-padding-top">
+    <ion-col size="6" class="ion-padding-horizontal">
+      <h3>Nom de la variation</h3>
+      <ng-container *ngFor="let attribute of variation.attributes; let last = last">
+        {{ attribute.option }}<span *ngIf="!last">,&nbsp;</span>
+      </ng-container>
+    </ion-col>
+    <ion-col size="6" class="ion-padding-horizontal">
+      <h3>Type de variation</h3>
+      <ng-container *ngFor="let attribute of variation.attributes; let last = last">
+        {{ attribute.name }}<span *ngIf="!last">,&nbsp;</span>
+      </ng-container>
+    </ion-col>
+  </ion-row>
+
+  <ion-row class="ion-padding-top">
+    <ion-col size="6" class="ion-padding-horizontal">
+      <h3>Référence (EAN, SKU...)</h3>
+      <ion-input type="text" [(ngModel)]="variation.sku"></ion-input>
+    </ion-col>
+    <ion-col size="6" class="ion-padding-horizontal">
+      <h3>Prix</h3>
+      <ion-input type="number" [(ngModel)]="variation.regular_price" step="0.1" (keypress)="numberOnlyValidation($event)"></ion-input>
+    </ion-col>
+  </ion-row>
+
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start" class="ion-padding-horizontal">
+      <ion-button shape="round" fill="clear" color="danger" (click)="alertDelete()">Supprimer variation</ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end" class="ion-padding-horizontal">
+      <ion-button shape="round" fill="solid" color="primary" (click)="updateVariation()">Modifier variation</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

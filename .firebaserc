@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "ordeready-app": {
+      "hosting": {
+        "app": [
+          "ordeready-app"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "ordeready-app"
+  }
+}

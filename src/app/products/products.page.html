@@ -1,0 +1,65 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button color="primary"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      <h1>Produits</h1>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="primary" (click)="refresh()">
+        <ion-icon style="font-size: 28px;" name="refresh"></ion-icon>
+      </ion-button>
+      <ion-button class="ion-padding-horizontal" shape="round" fill="solid" color="primary" (click)="goToCreateProduct()">Créer produit</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar class="subheader search">
+    <ion-searchbar #searchbar placeholder= "Rechercher..." mode="md" (search)="filterList($event)" (ionClear)="filterList($event)" clearIcon="close-circle-outline" class="ion-margin-bottom"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list lines="none" class="list-custom ion-padding-horizontal ion-padding-bottom">
+    <div *ngFor="let product of products; let i = index">
+      <div *ngIf="product.catalog_visibility != 'hidden'">
+        <ion-item (click)="goToProduct(product)" detail="true" detailIcon="arrow-forward-outline">
+          <div tabindex="0"></div> <!-- DEBUG -->
+          <ion-thumbnail slot="start">
+            <img *ngIf="!product.image" src="../../assets/placeholder.jpg">
+            <img *ngIf="product.image" [src]="product.image">
+          </ion-thumbnail>
+          <ion-col size="2">
+            <ion-label><h5>#{{ product.id }}</h5></ion-label>
+            <ion-label color="medium">{{ product.sku }}</ion-label>
+          </ion-col>
+          <ion-col size="4">
+            <ion-label class="ion-text-wrap">{{ product.name }}</ion-label>
+          </ion-col>
+          <ion-col size="2" class="ion-text-center">
+            <ion-label class="medium ion-text-wrap">
+              <div *ngFor="let category of product.categories; let last = last">
+                {{ category.name }}<span *ngIf="!last">,</span>
+              </div>
+            </ion-label>
+          </ion-col>
+          <ion-col size="2" class="ion-text-center">
+            <ion-label *ngIf="product.type == 'variable'"><b>{{ product.variations.length }}</b> variations</ion-label>
+          </ion-col>
+          <ion-col size="2" class="ion-text-end">
+            <!-- <ion-label *ngIf="product.type == 'variable'" color="medium">à partir de</ion-label> -->
+            <ion-label class="ion-text-wrap">
+              <ion-text *ngIf="product.type == 'variable'" color="medium">à partir de</ion-text>
+              {{ product.price | currency:'EUR':'symbol':'':'fr' }}
+            </ion-label>
+          </ion-col>
+        </ion-item>
+      </div>
+    </div>
+  </ion-list>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event)">
+    <ion-infinite-scroll-content>
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

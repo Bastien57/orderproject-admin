@@ -1,0 +1,32 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button color="primary"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      <h1>Jours de fermeture</h1>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="primary" (click)="refresh()">
+        <ion-icon style="font-size: 28px;" name="refresh"></ion-icon>
+      </ion-button>
+      <ion-button class="ion-padding-horizontal" shape="round" fill="solid" color="primary" (click)="goToCreateClosingDays()">Ajouter des jours de fermetures</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+<!--  <ion-toolbar class="subheader search">
+    <ion-searchbar #searchbar placeholder= "Rechercher..." mode="md" (search)="filterList($event)" (ionClear)="filterList($event)" clearIcon="close-circle-outline" class="ion-margin-bottom"></ion-searchbar>
+  </ion-toolbar> -->
+</ion-header>
+
+<ion-content>
+  <ion-list lines="none" class="list-custom ion-padding-horizontal ion-padding-bottom">
+   <div *ngFor="let closingday of closingdays; let i = index">
+        <ion-item detail="true" (click)="alertDelete(i)" detail-icon='close-circle-outline' >
+          <div tabindex="0"></div> 
+          <ion-col size="2">
+            <ion-label><h5>{{ closingday.n }}</h5></ion-label>
+          </ion-col>
+        </ion-item>
+    </div> 
+  </ion-list>
+</ion-content>

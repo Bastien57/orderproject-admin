@@ -1,0 +1,99 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button color="primary"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      <h1>Stocks</h1>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="primary" (click)="refresh()">
+        <ion-icon style="font-size: 28px;" name="refresh"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar class="subheader search">
+    <ion-searchbar #searchbar placeholder= "Rechercher..." mode="md" (search)="filterList($event)" (ionClear)="filterList($event)" clearIcon="close-circle-outline" class="ion-margin-bottom"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list lines="none" class="list-custom ion-padding-horizontal ion-padding-bottom">
+    <div *ngFor="let product of products; let i = index">
+      <div *ngIf="product.catalog_visibility != 'hidden'">
+        <!-- PRODUCT SIMPLE OR PRODUCT COMPOSITE -->
+        <div *ngIf="product.type == 'simple' || product.type == 'composite'">
+          <ion-item detail="false">
+            <div tabindex="0"></div> <!-- DEBUG -->
+            <ion-thumbnail slot="start">
+              <img *ngIf="!product.image" src="../../assets/placeholder.jpg">
+              <img *ngIf="product.image" [src]="product.image">
+            </ion-thumbnail>
+            <ion-col size="2">
+              <ion-label><h5>#{{ product.id }}</h5></ion-label>
+              <ion-label color="medium">{{ product.sku }}</ion-label>
+            </ion-col>
+            <ion-col size="4">
+              <ion-label class="ion-text-wrap">{{ product.name }}</ion-label>
+            </ion-col>
+            <ion-col size="2" class="ion-text-end">
+              <ion-label class="medium">Gérer le stock :</ion-label>
+            </ion-col>
+            <ion-col size="1" class="ion-text-center">
+              <ion-checkbox [(ngModel)]="product.manage_stock" (ngModelChange)="checkboxChanged(i)"></ion-checkbox>
+            </ion-col>
+            <ion-col size="2" class="ion-text-center">
+              <div *ngIf="product.manage_stock">
+                <ion-badge *ngIf="product.stock_status =='instock'" color="success">En stock</ion-badge>
+                <ion-badge *ngIf="product.stock_status =='outofstock'" color="danger">En rupture</ion-badge>
+                <ion-badge *ngIf="product.stock_status =='onbackorder'" color="warning">En réappro</ion-badge>
+              </div>
+              <div *ngIf="!product.manage_stock">
+                <ion-select [interfaceOptions]="customAlertOptions" class="ion-text-center ion-align-item-center ion-align-self-center" okText="OK" cancelText="ANNULER" [(ngModel)]="product.stock_status" (ionChange)="selectChanged(i, $event)">
+                  <ion-select-option *ngFor="let status of statutes" [value]="status.value">{{ status.text }}</ion-select-option>
+                </ion-select>
+              </div>
+            </ion-col>
+            <ion-col size="1" class="ion-text-end">
+              <ion-input *ngIf="product.manage_stock" (click)="$event.target.select()" (keyup.enter)="closeKeyboard()" type="number" [(ngModel)]="product.stock_quantity" (ngModelChange)="inputChanged(i)"></ion-input>
+            </ion-col>
+          </ion-item>
+        </div>
+        <!-- PRODUCT VARIABLE -->
+        <div *ngIf="product.type == 'variable'">
+          <ion-item (click)="goToProduct(product)" detail="true" detailIcon="arrow-forward-outline">
+            <div tabindex="0"></div> <!-- DEBUG -->
+            <ion-thumbnail slot="start">
+              <img *ngIf="!product.image" src="../../assets/placeholder.jpg">
+              <img *ngIf="product.image" [src]="product.image">
+            </ion-thumbnail>
+            <ion-col size="2">
+              <ion-label><h5>#{{ product.id }}</h5></ion-label>
+              <ion-label color="medium">{{ product.sku }}</ion-label>
+            </ion-col>
+            <ion-col size="10">
+              <ion-label class="ion-text-wrap">{{ product.name }}</ion-label>
+            </ion-col>
+          </ion-item>
+        </div>
+      </div>
+    </div>
+  </ion-list>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event)">
+    <ion-infinite-scroll-content>
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start" class="ion-padding-horizontal">
+      <ion-button shape="round" fill="solid" color="primary" (click)="cancelStock()">Annuler</ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end" class="ion-padding-horizontal">
+      <ion-button shape="round" fill="solid" color="primary" (click)="saveStock()">Sauvegarder</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

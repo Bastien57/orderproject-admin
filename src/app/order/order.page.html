@@ -1,0 +1,242 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button color="primary" text="" icon="arrow-back-outline" defaultHref="/orders"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <h1>Commande <span *ngIf="order">#{{ order.number | number:'':'fr' }}</span></h1>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="order">
+
+  <!-- WOO -->
+  <div *ngIf="order.from.name == 'woocommerce'">
+    <ion-row class="ion-no-padding">
+      <ion-col size="4" class="ion-no-padding">
+        <ion-row class="ion-padding-horizontal">
+          <h3>Client</h3>
+        </ion-row>
+        <ion-row class="ion-padding-horizontal">
+          <ion-col class="ion-no-padding">
+            <div>
+              <span *ngIf="order.shipping.first_name">{{ order.shipping.first_name }} </span>
+              <span *ngIf="!order.shipping.first_name">{{ order.billing.first_name }} </span>
+              <span *ngIf="order.shipping.last_name">{{ order.shipping.last_name }}</span>
+              <span *ngIf="!order.shipping.last_name">{{ order.billing.last_name }}</span>
+            </div>
+            <div>
+              <span *ngIf="order.shipping.address_1">{{ order.shipping.address_1 }}</span>
+              <span *ngIf="!order.shipping.address_1">{{ order.billing.address_1 }}</span>
+              <span *ngIf="order.shipping.address_2">, {{ order.shipping.address_2 }} </span>
+              <span *ngIf="!order.shipping.address_2">
+                <span *ngIf="order.billing.address_2">, {{ order.billing.address_2 }} </span>
+              </span>
+            </div>
+            <div>
+              <span *ngIf="order.shipping.country">
+                <span *ngIf="order.shipping.country == 'FR'">F-</span>
+                <span *ngIf="order.shipping.country == 'LU'">L-</span>
+              </span>
+              <span *ngIf="!order.shipping.country">
+                <span *ngIf="order.billing.country == 'FR'">F-</span>
+                <span *ngIf="order.billing.country == 'LU'">L-</span>
+              </span>
+              <span *ngIf="order.shipping.country">{{ order.shipping.postcode }} </span>
+              <span *ngIf="!order.shipping.country">{{ order.billing.postcode }} </span>
+              <span *ngIf="order.shipping.country">{{ order.shipping.city }}</span>
+              <span *ngIf="!order.shipping.country">{{ order.billing.city }}</span>
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row class="ion-padding-horizontal phone" *ngIf="order.billing.phone">
+          <ion-col size="auto" class="ion-no-padding label">
+            <ion-icon size="medium" name="call-outline"></ion-icon>
+            <ion-label>{{ order.billing.phone }}</ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <ion-col size="4" class="ion-no-padding">
+        <ion-row class="ion-padding-horizontal">
+          <h3>Origine</h3>
+        </ion-row>
+        <ion-row class="ion-padding-end">
+          <ion-item lines="none">
+            <div tabindex="0"></div> <!-- DEBUG -->
+            <ion-thumbnail slot="start">
+              <img *ngIf="!order.from.image" src="../../assets/website.jpg">
+              <img *ngIf="order.from.image" [src]="order.from.image">
+            </ion-thumbnail>
+            <ion-label>
+              Site internet
+            </ion-label>
+          </ion-item>
+        </ion-row>
+      </ion-col>
+      <ion-col size="4" class="ion-no-padding">
+        <ion-row class="ion-padding-horizontal">
+          <h3>Statut</h3>
+        </ion-row>
+        <ion-row class="ion-padding-horizontal status">
+          <ion-badge *ngIf="order.status == 'pending'" color="medium">Attente paiement</ion-badge>
+          <ion-badge *ngIf="order.status == 'on-hold'" color="warning">En attente</ion-badge>
+          <ion-badge *ngIf="order.status == 'processing'" color="success">En cours</ion-badge>
+          <ion-badge *ngIf="order.status == 'completed'" color="medium">Terminée</ion-badge>
+          <ion-badge *ngIf="order.status == 'finished'" color="medium">Terminée</ion-badge> <!-- OLD -->
+          <ion-badge *ngIf="order.status == 'failed'" color="danger">Échouée</ion-badge>
+          <ion-badge *ngIf="order.status == 'cancelled'" color="medium">Annulée</ion-badge>
+          <ion-badge *ngIf="order.status == 'refunded'" color="medium">Remboursée</ion-badge>
+          <ion-badge *ngIf="order.status == 'trash'" color="danger">Supprimée</ion-badge>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="ion-no-padding ion-padding-top ion-margin-top">
+      <ion-col size="4" class="ion-no-padding">
+        <ion-row class="ion-padding-horizontal">
+          <h3>Date de création</h3>
+        </ion-row>
+        <ion-row class="ion-padding-horizontal">
+          {{ order.date_created | date:'dd/MM/yy' }} {{ order.date_created | date:'HH:mm' }}
+        </ion-row>
+      </ion-col>
+     
+      <ion-col size="4" class="ion-no-padding">
+        <div *ngFor="let meta of order.meta_data">
+          <ion-row class="ion-padding-horizontal" *ngIf="meta.key == 'jckwds_date' || meta.key == 'pickup_date'">
+            <h3>Date de livraison</h3>
+          </ion-row>
+          <ion-row class="ion-padding-horizontal" *ngIf="meta.key == 'jckwds_date'">
+            {{ meta.value }}
+          </ion-row>
+          <ion-row class="ion-padding-horizontal" *ngIf="meta.key == 'pickup_date'">
+            {{ meta.value | date:'dd/MM/yy' }}
+          </ion-row>
+          <ion-row class="ion-padding-horizontal" *ngIf="meta.key == 'jckwds_timeslot' || meta.key == 'pickup_time'">
+            <b>{{ meta.value }}</b>
+          </ion-row>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="ion-padding-horizontal ion-padding-top ion-margin-top">
+      <h3>Détails</h3>
+    </ion-row>
+
+    <ion-list class="ion-no-padding" *ngFor="let item of order.line_items">
+      <!-- PRODUCTS SIMPLE & VARIABLE -->
+      <ion-item *ngIf="!item.composite_parent && !item.bundled_by">
+        <div tabindex="0"></div> <!-- DEBUG -->
+        <ion-thumbnail slot="start">
+          <img *ngIf="!item.image" src="../../assets/placeholder.jpg">
+          <img *ngIf="item.image" [src]="item.image">
+        </ion-thumbnail>
+        <ion-col size="1" class="ion-text-center">
+          {{ item.quantity }}x
+        </ion-col>
+        <ion-col size="6">
+          <ion-label><b>{{ item.name }}</b></ion-label>
+          <ion-label color="medium" *ngIf="item.sku">{{ item.sku }}</ion-label>
+          <ion-label color="dark" *ngIf="item.meta_data.length > 0" class="ion-padding-start ion-text-wrap">
+            <div *ngFor="let meta of item.meta_data">
+              <div *ngIf="!meta.display_key.includes('_')">
+                <span [innerHtml]="meta.display_key"></span>
+                <span *ngIf="meta.display_key"> : </span>
+                <span [innerHtml]="meta.display_value"></span>
+              </div>
+              <!-- PLUGIN EXTRA PRODUCT FIELD -->
+              <div *ngIf="meta.display_key == 'extra_product_field'">
+                <span [innerHtml]="meta.display_value"></span>
+              </div>
+            </div>
+          </ion-label>
+        </ion-col>
+        <ion-col size="3" class="ion-text-end">
+          {{ item.subtotal / item.quantity | currency:'EUR':'symbol':'':'fr' }} <span class="medium">/ unité</span>
+        </ion-col>
+        <ion-col size="2" class="ion-text-end">
+          {{ item.subtotal | currency:'EUR':'symbol':'':'fr' }}
+        </ion-col>
+      </ion-item>
+      
+      <!-- PRODUCTS COMPOSITE & BUNDLE -->
+      <ion-item *ngIf="item.composite_parent || item.bundled_by" class="composte-bundle">
+        <div tabindex="0"></div> <!-- DEBUG -->
+        <ion-col size="1" class="ion-text-center">
+          {{ item.quantity }}x
+        </ion-col>
+        <ion-col size="6">
+          <ion-label>{{ item.name }}</ion-label>
+        </ion-col>
+        <ion-col size="3" class="ion-text-end">
+          {{ item.subtotal / item.quantity | currency:'EUR':'symbol':'':'fr' }} <span class="medium">/ unité</span>
+        </ion-col>
+        <ion-col size="2" class="ion-text-end">
+          {{ item.subtotal | currency:'EUR':'symbol':'':'fr' }}
+        </ion-col>
+      </ion-item>
+    </ion-list>
+
+    <ion-item *ngFor="let item of order.shipping_lines">
+      <div tabindex="0"></div> <!-- DEBUG -->
+      <ion-thumbnail slot="start">
+      </ion-thumbnail>
+      <ion-col size="10">
+        Livraison : <b>{{ item.method_title }}</b>
+      </ion-col>
+      <ion-col size="2" class="ion-text-end">
+        {{ item.total | currency:'EUR':'symbol':'':'fr' }}
+      </ion-col>
+    </ion-item>
+
+    <ion-item *ngFor="let item of order.coupon_lines">
+      <div tabindex="0"></div> <!-- DEBUG -->
+      <ion-thumbnail slot="start">
+      </ion-thumbnail>
+      <ion-col size="10">
+        <span>Code promo : </span>
+        <span style="text-transform: uppercase"><b>{{ item.code }} </b></span>
+        <span>(-{{ item.meta_data[0].value.amount }}</span>
+        <span *ngIf="item.meta_data[0].value.discount_type == 'percent'">%)</span>
+        <span *ngIf="item.meta_data[0].value.discount_type != 'percent'">)</span>
+      </ion-col>
+      <ion-col size="2" class="ion-text-end">
+        - {{ item.discount | currency:'EUR':'symbol':'':'fr' }}
+      </ion-col>
+    </ion-item>
+
+    <ion-row class="ion-padding-horizontal ion-padding-top ion-margin-top">
+      <ion-col class="ion-no-padding">
+        <ion-row class="ion-no-padding ion-align-items-center" *ngFor="let fee of order.fee_lines">
+          <ion-col size="10" class="ion-text-end">
+            <h3 *ngIf="fee.name == 'Fee'" class="total">Pourboire</h3>
+            <h3 *ngIf="fee.name != 'Fee'" class="total">{{ fee.name }}</h3>
+          </ion-col>
+          <ion-col size="2" class="ion-text-end">
+            {{ fee.total | currency:'EUR':'symbol':'':'fr' }}
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    
+    <ion-row class="ion-padding-horizontal ion-padding-top ion-align-items-center">
+      <ion-col size="10" class="ion-text-end">
+        <h3 class="total">Total</h3>
+      </ion-col>
+      <ion-col size="2" class="ion-text-end">
+        <b>{{ order.total | currency:'EUR':'symbol':'':'fr' }}</b>
+      </ion-col>
+    </ion-row>
+
+  </div>
+
+</ion-content>
+
+<ion-footer class="ion-no-border ion-padding-horizontal">
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button shape="round" fill="solid" color="primary" (click)="alertChangeStatus(order)">Modifier statut</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

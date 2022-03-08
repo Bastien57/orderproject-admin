@@ -1,0 +1,43 @@
+<ion-content>
+
+  <ion-row class="ion-justify-content-center ion-align-items-center" style="height: 100%">
+    <ion-col class="login">
+
+      <ion-row class="ion-padding-horizontal ion-justify-content-center">
+        <ion-col size="8">
+          <img src="../assets/ordeready-logo.png" />
+        </ion-col>
+      </ion-row>
+      <form [formGroup]="loginForm" (ngSubmit)="login()">
+        <ion-card mode="ios">
+          <ion-card-content>
+            <ion-row class="ion-justify-content-center">
+              <h1>Connexion</h1>
+            </ion-row>
+            <ion-row class="header-row ion-padding-top">
+              <ion-label color="medium">Email</ion-label>
+            </ion-row>
+            <ion-input class="ion-padding-horizontal" clearInput autocapitalize="none" type="text" formControlName="email"></ion-input>
+
+            <ion-row class="header-row ion-padding-top">
+              <ion-label color="medium">Mot de passe</ion-label>
+            </ion-row>
+            <ion-input class="ion-padding-horizontal" clearInput autocapitalize="none" type="password" formControlName="password"></ion-input>
+
+            <ion-row class="ion-padding-top ion-justify-content-end">
+              <ion-button type="submit" color="primary" [disabled]="!loginForm.valid">Se connecter</ion-button>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+      </form>
+      <ion-row class="ion-padding-horizontal ion-justify-content-center">
+        <ion-col size="8" style="height:70px">
+        </ion-col>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+  <!-- <ion-row class="ion-justify-content-center ion-align-items-center" style='height: 100%'>
+    //content
+    </ion-row> -->
+
+</ion-content>

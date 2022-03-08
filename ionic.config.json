@@ -1,0 +1,7 @@
+{
+  "name": "ordeready",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

@@ -1,0 +1,33 @@
+<ion-app>
+  <ion-split-pane contentId="main-content">
+    <ion-menu contentId="main-content" type="overlay">
+      <ion-content>
+        <img class="logo" src="../assets/ordeready-logo.png" />
+        <ion-list id="inbox-list">
+          <ion-menu-toggle auto-hide="false">
+            <div *ngFor="let p of appPages; let i = index">
+              <ion-item (click)="selectedIndex = i" routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" [class.selected]="selectedIndex == i">
+                <div tabindex="0"></div> <!-- DEBUG -->
+                <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-outline'"></ion-icon>
+                <ion-label>{{ p.title }}</ion-label>
+              </ion-item>
+            </div>
+            <ion-item (click)="logout()" lines="none" detail="false" style="cursor: pointer">
+              <div tabindex="0"></div> <!-- DEBUG -->
+              <ion-icon slot="start" name="log-out-outline"></ion-icon>
+              <ion-label>Déconnexion</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+        </ion-list>
+      </ion-content>
+      <ion-footer class="ion-no-border">
+        <ion-row class="ion-no-padding">
+          <ion-col class="ion-no-padding ion-text-center">
+            <ion-label color="medium">1.0.0</ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-footer>
+    </ion-menu>
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+  </ion-split-pane>
+</ion-app>

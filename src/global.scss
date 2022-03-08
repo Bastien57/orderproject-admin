@@ -1,0 +1,331 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import '~@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+
+@import './assets/fonts/Poppins.css';
+
+:root {
+  
+  --ion-font-family: "Poppins", sans-serif;
+
+  .login {
+    max-width: 480px;
+  }
+
+  .loadingLogin {
+    --backdrop-opacity: 1;
+    --background: white;
+    ion-backdrop {
+      background: white
+    }
+    .loading-wrapper {
+      box-shadow: none;
+    }
+  }
+
+  ion-menu {
+    --max-width: 200px;
+  }
+
+  ion-toolbar {
+    --min-height: 80px;
+    ion-input {
+      margin-top: 0px;
+      height: 50px;
+    }
+  }
+
+  ion-toolbar.subheader {
+    --min-height: 48px;
+  }
+  ion-title {
+    color: var(--ion-color-dark);
+    padding-left: 16px;
+  }
+
+  h1 {
+    font-weight: 600;
+    margin: 0px;
+  }
+
+  h2 {
+    font-weight: 600;
+    font-size: 20px;
+    margin: 0px;
+  }
+
+  h3 {
+    font-weight: 600;
+    font-size: 14px;
+    margin-top: 0px;
+    color: var(--ion-color-medium);
+  }
+
+  h3.total {
+    margin: 0px;
+  }
+
+  h5 {
+    font-weight: 600;
+    font-size: 16px;
+    margin: 0px;
+  }
+
+  b {
+    font-weight: 600;
+  }
+
+  ion-card {
+    border-radius: 10px;
+  }
+
+  ion-input, ion-select, ion-textarea {
+    border: solid 1px var(--ion-color-light-shade);
+    border-radius: 6px;
+    margin-top: 8px;
+  }
+
+  ion-input.no-margin {
+    margin-top: 0px;
+  }
+
+  ion-input {
+    --placeholder-opacity: 0.2;
+    --placeholder-font-style: italic;
+  }
+
+  ion-searchbar {
+    border: solid 1px var(--ion-color-light-shade);
+    border-radius: 6px;
+    --box-shadow: none;
+    --clear-button-color: var(--ion-color-primary);
+  }
+
+  .subheader.search {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  ion-segment {
+    z-index: 1;
+  }
+
+  ion-item.composte-bundle {
+    --padding-start: 120px;
+  }
+
+  .list-custom {
+    ion-item:first-child {
+      margin-top: 8px;
+    }
+    ion-item::part(detail-icon) {
+      padding-left: 20px;
+    }
+    ion-item {
+      --highlight-height: 0;
+      cursor: pointer;
+      --padding-start: 12px;
+      --padding-top: 8px;
+      --padding-bottom: 8px;
+      -webkit-box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+      --detail-icon-color: var(--ion-color-primary);
+      --detail-icon-opacity: 1;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+      border-radius: 10px;
+      // margin-bottom: 0px;
+    }
+    ion-thumbnail {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+    ion-input {
+      margin-top: 0
+    }
+  }
+
+  .no-effect {
+    --ripple-color: transparent;
+    --background-hover: transparent;
+  }
+
+  ion-select {
+    max-width: 100%
+  }
+
+  ion-thumbnail {
+    --border-radius: 6px;
+  }
+
+  ion-card {
+    ion-card-subtitle {
+      font-weight: normal;
+      color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.6);
+      text-transform: none;
+      font-size: 14px;
+    }
+  }
+
+  .medium {
+    color: var(--ion-color-medium);
+  }
+
+  .bold {
+    font-weight: 600;
+  }
+
+  ion-button {
+    font-weight: 600;
+  }
+
+  .subheader ion-segment {
+    padding-left: 16px;
+  }
+
+  // .subheader ion-segment-button {
+  //   max-width: 160px !important;
+  // }
+
+  ion-button {
+    --border-radius: 10px;
+    --padding-bottom:	20px;
+    --padding-end:	20px;
+    --padding-start:	20px;
+    --padding-top:	20px;
+    --box-shadow: none;
+    height: 40px;
+    ion-icon {
+      font-size: 2.4em
+    }
+  }
+
+  ion-alert {
+    --min-width: 320px;
+    .alert-radio-group {
+      border: none
+    }
+    .alert-message {
+      color: var(--ion-text-dark)
+    }
+  }
+  
+  ion-toast {
+    --border-radius: 10px;
+    --background: var(--ion-color-dark-tint);
+    font-size: 16px; 
+    // --start: 200px;
+    --max-width: 480px;
+    transform: translateY(-8px) !important;
+  }
+
+  ion-toast.toast-login {
+    --start: 0px;
+  }
+
+  .status {
+    ion-icon {
+      height: 24px;
+      width: 24px;
+      vertical-align: middle;
+      margin-bottom: 2px;
+    }
+    ion-label {
+      vertical-align: middle;
+      margin-left: 8px;
+      // margin-top: 2px;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+    }
+  }
+
+  .phone {
+    ion-icon {
+      height: 20px;
+      width: 20px;
+      vertical-align: middle;
+      margin-bottom: 2px;
+    }
+    ion-label {
+      vertical-align: middle;
+      margin-left: 8px;
+      // margin-top: 2px;
+    }
+  }
+
+  .header-row {
+    font-weight: normal;
+      color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.6);
+      text-transform: none;
+      font-size: 14px;
+  }
+
+  .customAlertSelect {
+    color: var(--ion-color-primary);
+    .alert-radio-inner {
+      background-color: var(--ion-color-primary);
+    }
+    [aria-checked=true] .alert-radio-icon {
+      border-color: var(--ion-color-primary);
+    }
+    [aria-checked=true] .alert-checkbox-icon {
+      border-color: var(--ion-color-primary);
+      background-color: var(--ion-color-primary);
+    }
+    .alert-button {
+      color: var(--ion-color-primary);
+      font-weight: 600;
+    }
+    .alert-button-role-cancel {
+      color: var(--ion-color-medium);
+      font-weight: 500;
+    }
+    .alert-radio-group {
+      max-height: 480px;;
+    }
+  }
+
+  .date-indicator {
+    color: black;
+    margin: auto 0;
+    font-size: 0.8rem;
+  }
+
+  ion-fab.delete-fab {
+    right: -2px;
+    top: -2px;
+    ion-fab-button{
+      width: 28px;
+      height:28px;
+      margin: 0;
+    }
+  }
+
+  .thumbnail {
+    width: 100%;
+    border-radius: 6px;
+  }
+
+}

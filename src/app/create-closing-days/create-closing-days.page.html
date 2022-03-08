@@ -1,0 +1,35 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button color="primary" text="" icon="arrow-back-outline" defaultHref="/closing-days"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <h1>Ajouter des jours de fermeture</h1>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true">
+
+  <ion-row class="ion-padding-top ion-padding-horizontal ion-margin-top ion-align-items-center">
+    <ion-col size="auto">
+      <h2 style="display:inline-block">Jours de fermeture</h2>
+    </ion-col>
+  </ion-row>
+  
+  <ion-row class="ion-padding-horizontal">
+    <ion-col size="3" class="ion-text-center">
+      <ion-row class="header-row padding-bottom-8 ion-padding-vertical">Période</ion-row>
+      <ion-input (click)="openModalCalendar()" class="ion-padding-horizontal pointer" type="text" readonly placeholder="__/__/____ - __/__/____" [(ngModel)]="range"></ion-input>
+    </ion-col>
+    <ion-col size="3" class="ion-text-center">
+      <ion-row style="padding-top: 60px">
+        <ion-button (click)="getCalendar()" color="dark">
+          <ion-icon slot="start" name="document-outline"></ion-icon>
+          Ajouter des jours de fermeture
+        </ion-button>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+
+</ion-content>

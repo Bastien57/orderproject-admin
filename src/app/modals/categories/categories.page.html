@@ -1,0 +1,33 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title mode="md"><h1>Catégories</h1></ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal(null)" mode="md" color="primary">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar class="subheader">
+    <ion-row class="ion-no-padding ion-padding-bottom ion-align-items-center">
+      <ion-col class="ion-no-padding ion-padding-start">
+        <ion-input type="text" [(ngModel)]="category.name" placeholder="Nom de la nouvelle catégorie"></ion-input>
+      </ion-col>
+      <ion-col size="auto" class="ion-no-padding ion-padding-horizontal">
+        <ion-button fill="clear" expand="block" mode="md" (click)="createCategory()">Ajouter</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list lines="none" class="list-custom ion-padding-horizontal ion-padding-bottom">
+    <div *ngFor="let category of categories">
+      <ion-item (click)="closeModal(category)" detail="false">
+        <div tabindex="0"></div>
+        {{ category.name }}
+      </ion-item>
+    </div>
+  </ion-list>
+
+</ion-content>
